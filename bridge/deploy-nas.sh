@@ -42,7 +42,9 @@ COPYFILE_DISABLE=1 tar --no-xattrs -czf - -C bridge bridge.js admin.html | $SSH 
 echo "→ starting containers"
 $SSH "$D network inspect signalglass >/dev/null 2>&1 || $D network create signalglass >/dev/null
   $D rm -f signalglass-api signalglass-bridge >/dev/null 2>&1
-  $D run -d --name signalglass-api --restart unless-stopped --network signalglass --memory 400m \
+  # The Signal service runs as user 1000 inside its container; only that user may read the keys.
+  $D run --rm -v '$DIR/signal-cli':/d $NODE_IMAGE sh -c 'chown -R 1000:1000 /d && chmod 700 /d'
+  $D run -d --name signalglass-api --restart unless-stopped --network signalglass --memory 300m \
     -v '$DIR/signal-cli':/home/.local/share/signal-cli \
     -e MODE=json-rpc-native -e JSON_RPC_IGNORE_ATTACHMENTS=true -e JSON_RPC_IGNORE_STORIES=true \
     -e JSON_RPC_IGNORE_AVATARS=true -e JSON_RPC_IGNORE_STICKERS=true \
