@@ -1,0 +1,254 @@
+/* Additive display: pure black is transparent, so black is the canvas and
+   light pixels are the only thing the wearer sees. */
+:root {
+  --fg: #f4f4f4;
+  --dim: #a9adb3;
+  --surface: #1b1e23;
+  --accent: #6f9bff;
+  --row: 100px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 600px;
+  height: 600px;
+  overflow: hidden;
+  background: #000;
+  color: var(--fg);
+  font: 22px/1.25 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root { width: 600px; height: 600px; }
+
+.screen {
+  width: 600px;
+  height: 600px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  height: 52px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.head h1 {
+  margin: 0 12px 0 0;
+  font-size: 26px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.head .pos { color: var(--dim); font-size: 18px; white-space: nowrap; }
+
+/* ---------- focusable things ---------- */
+.f {
+  font: inherit;
+  color: inherit;
+  border: 3px solid transparent;
+  border-radius: 18px;
+  background: var(--surface);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.f:focus {
+  background: var(--accent);
+  border-color: #fff;
+  color: #000;
+}
+.f:focus .sub, .f:focus .when { color: #000; }
+
+/* ---------- lists ---------- */
+.rows { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.rows > * + * { margin-top: 4px; }
+
+.row {
+  height: calc(var(--row) - 4px);
+  flex: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px 0 20px;
+  text-align: left;
+}
+.row .txt { flex: 1; min-width: 0; }
+.row .line { display: flex; align-items: baseline; }
+.row .t {
+  flex: 1;
+  min-width: 0;
+  font-size: 23px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row .when { flex: none; margin-left: 10px; font-size: 17px; color: var(--dim); }
+.row .sub {
+  margin-top: 4px;
+  font-size: 18px;
+  color: var(--dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row .chev { flex: none; margin-left: 10px; font-size: 26px; opacity: .7; }
+.row .dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-right: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.row .dot.off { background: transparent; }
+.f:focus .dot { background: #000; }
+.f:focus .dot.off { background: transparent; }
+.row.read .t { font-weight: 400; }
+.row.past { opacity: .55; }
+.badge {
+  flex: none;
+  min-width: 34px;
+  height: 34px;
+  margin-left: 10px;
+  padding: 0 9px;
+  border-radius: 17px;
+  background: var(--accent);
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: center;
+}
+.f:focus .badge { background: #000; color: #fff; }
+
+input.row {
+  padding: 0 20px;
+  font-size: 23px;
+  font-weight: 600;
+}
+input.row::placeholder { color: var(--dim); }
+input.row:focus::placeholder { color: #000; }
+
+/* ---------- message / sign-in ---------- */
+.center {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.center > * + * { margin-top: 14px; }
+.center p { margin-bottom: 0; margin-left: 0; margin-right: 0; color: var(--dim); max-width: 520px; }
+.center p:first-child { margin-top: 0; }
+.center .big { color: var(--fg); font-size: 26px; font-weight: 700; }
+.center .quote {
+  color: var(--fg);
+  max-height: 190px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+.code {
+  font: 700 64px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 6px;
+  color: var(--accent);
+}
+.code.wide { font-size: 92px; letter-spacing: 14px; padding-left: 14px; }
+.btn {
+  min-height: 80px;
+  width: 100%;
+  padding: 0 22px;
+  font-size: 23px;
+  font-weight: 600;
+  text-align: center;
+}
+.stack { width: 100%; display: flex; flex-direction: column; flex: none; }
+.stack > * + * { margin-top: 6px; }
+
+.spin {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 5px solid rgba(255, 255, 255, .2);
+  border-top-color: var(--accent);
+  animation: spin 1s steps(12) infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- reader ---------- */
+.read .meta {
+  flex: none;
+  margin-bottom: 8px;
+  font-size: 18px;
+  color: var(--dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  font-size: 22px;
+  line-height: 30px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.scroll .k { color: var(--dim); }
+.read .ctl { flex: none; display: flex; margin-top: 10px; }
+.read .ctl .btn { flex: 1; min-height: 72px; padding: 0; }
+.read .ctl .btn + .btn { margin-left: 8px; }
+
+/* ---------- chat bubbles ---------- */
+.scroll.chat { white-space: normal; display: flex; flex-direction: column; }
+.day { align-self: center; margin: 8px 0 4px; font-size: 16px; color: var(--dim); }
+.msg {
+  max-width: 82%;
+  margin-top: 6px;
+  padding: 8px 14px;
+  border-radius: 18px;
+  background: var(--surface);
+  align-self: flex-start;
+  white-space: pre-wrap;
+}
+.msg.me { align-self: flex-end; background: transparent; border: 2px solid var(--accent); }
+.msg .who { font-size: 16px; font-weight: 700; color: var(--accent); }
+.msg .at { margin-left: 8px; font-size: 15px; color: var(--dim); white-space: nowrap; }
+
+/* ---------- toast ---------- */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  max-width: 540px;
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: #33373e;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+#toast.on { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spin { animation-duration: 2s; }
+  #toast { transition: none; }
+}

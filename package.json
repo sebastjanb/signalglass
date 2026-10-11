@@ -1,0 +1,11 @@
+{
+  "name": "signalglass",
+  "private": true,
+  "scripts": {
+    "api:dev": "wrangler dev --config worker/wrangler.toml --port 8789",
+    "api:deploy": "wrangler deploy --config worker/wrangler.toml"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

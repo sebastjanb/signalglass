@@ -1,0 +1,21 @@
+name = "signalglass"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[vars]
+# Pages that may use the relay from a browser.
+ALLOWED_ORIGINS = "https://sebastjanb.github.io,http://localhost:8895"
+
+# PIPE: one per bridge, holds its WebSocket. PAIR: one per pairing code, kept ten minutes.
+[[durable_objects.bindings]]
+name = "PIPE"
+class_name = "Pipe"
+
+[[durable_objects.bindings]]
+name = "PAIR"
+class_name = "Pair"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Pipe", "Pair"]

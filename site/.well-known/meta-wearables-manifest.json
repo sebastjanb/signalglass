@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "name": "Signal Glass",
+  "description": "Read and answer Signal messages.",
+  "appearance": {
+    "theme_color": "#6F9BFF",
+    "icon": {
+      "src": "icon.png",
+      "type": "monochrome"
+    }
+  }
+}
